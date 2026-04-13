@@ -19,7 +19,9 @@ Tests use `nix eval -f test.nix` — success when output is `[ ]` (empty list).
 
 ```nix
 let
-  pkgs = import <nixpkgs> {};
+  npinsed = import ../../npins;
+  pkgs = import npinsed.nixpkgs {};
+  my-derivation = import ./default.nix {};
 in pkgs.lib.runTests {
   test-name = {
     expr = <expression>;
@@ -49,7 +51,7 @@ Run tests with: `nix eval -f test.nix`
 
 ## pkgs.lib.testAllTrue
 
-`pkgs.lib.testAllTrue` produces a complete `{ expr, expected }` attrset on its own. Use it directly as the test case value — do **not** wrap it in another `{ expr = ...; expected = ...; }`:
+Use `pkgs.lib.testAllTrue` for multiple assertions that all expect `true`. It produces a complete `{ expr, expected }` attrset on its own — do **not** wrap it in another `{ expr = ...; expected = ...; }`:
 
 ```nix
 # correct
@@ -64,6 +66,13 @@ test-lib = {
   expected = true;
 };
 ```
+
+**Tip**: Merge all expected-true tests into a single `pkgs.lib.testAllTrue` for cleaner test files.
+
+# Naming Conventions
+
+- Use `npinsed` for the npins attribute set (e.g., `import ../../npins`) to distinguish from `pkgs.npins`
+- Use `pkgs` for the nixpkgs instance derived from npinsed
 
 # References
 

@@ -21,6 +21,22 @@
       "name": "nixos-25.11",
       "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.9067.54170c54449e/nixexprs.tar.xz",
       "hash": "16yz0vih085sf70dg2nprblrrf1cqm95riym51h4n7hds4imgfjl"
+    },
+    "slang": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "cyril0124",
+        "repo": "slang"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
+      "submodules": false,
+      "version": "v9.0",
+      "revision": "5768e274b50dcc61a3f336f961b80a35adef8706",
+      "url": "https://api.github.com/repos/cyril0124/slang/tarball/v9.0",
+      "hash": "1bqfqf94cbf1jxj6bl4apwfqpnk5sv3kjm4s3mgxd80k4hr651j3"
     }
   },
   "version": 5
