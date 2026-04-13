@@ -21,7 +21,7 @@ Tests use `nix eval -f test.nix` — success when output is `[ ]` (empty list).
 let
   npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
-  my-derivation = import ./default.nix {};
+  my-derivation = import ./.;
 in pkgs.lib.runTests {
   test-name = {
     expr = <expression>;

@@ -16,6 +16,19 @@
       "url": "https://api.github.com/repos/jeremy-rifkin/libassert/tarball/v2.2.1",
       "hash": "1yv8pscw932phcq48ifb8nrhz12r26r72biii0qrd0nd1msyw2d2"
     },
+    "luajit-pro": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "cyril0124",
+        "repo": "luajit-pro"
+      },
+      "branch": "master",
+      "submodules": true,
+      "revision": "a26604a0ca677d88fb60cf86f9d68970dca95eed",
+      "url": null,
+      "hash": "1a8f0d03hj7rywr670j5l725d33jdaz3w3pvppmf6h2kbb64n0mc"
+    },
     "mimalloc2": {
       "type": "GitRelease",
       "repository": {
