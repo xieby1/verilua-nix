@@ -5,4 +5,7 @@ in pkgs.mkShell {
   packages = [
     pkgs.npins
   ];
+  shellHook = ''
+    export NPINS_DIRECTORY=$(realpath ./npins/)
+  '';
 }
