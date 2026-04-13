@@ -1,5 +1,21 @@
 {
   "pins": {
+    "cluacov": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "mpeterv",
+        "repo": "cluacov"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
+      "submodules": false,
+      "version": "0.1.1",
+      "revision": "ca8e019e1f61b7f3f2c2d37f2728a741dc167cc5",
+      "url": "https://api.github.com/repos/mpeterv/cluacov/tarball/0.1.1",
+      "hash": "1j423r3lrm0293lddnpph4xk66p5nmxlw43zmlfwsyrb10ns8igs"
+    },
     "libassert": {
       "type": "GitRelease",
       "repository": {

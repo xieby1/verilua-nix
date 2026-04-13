@@ -49,6 +49,46 @@ Run tests with: `nix eval -f test.nix`
 - Instead, build the derivation with `nix-build <path>` first to explore its output, then write tests that check the directory structure of the built result using `builtins.readDir`
 - Only test files that are meaningful to users of the package (e.g. the static and shared libraries for a C library, not intermediate build artifacts like `.o` files)
 
+## Testing Lua packages (buildLuarocksPackage)
+
+Lua packages using `buildLuarocksPackage` are functions that take parameters, so they cannot be built with direct `nix-build`. `nix-build` can only build files that contain a derivation. For nix files that contain a function returning a derivation, you need to evaluate that function explicitly.
+
+**Building Lua packages for inspection:**
+
+```bash
+nix build --expr "let luajit-pro = import ./luajit-pro; in luajit-pro.pkgs.callPackage ./luajit-pro/lua/<package> {}"
+```
+
+This evaluates the function and builds the resulting derivation, allowing you to inspect its output structure.
+
+**Critical distinction:**
+- `pkgs.callPackage` — uses packages defined in nixpkgs (e.g., `pkgs.luacov`)
+- `luajit-pro.pkgs.callPackage` — uses packages specific to luajit-pro
+
+This ensures dependencies (like `luacov`) come from luajit-pro's packages.
+
+```nix
+let
+  npinsed = import <npins-path>;
+  pkgs = import npinsed.nixpkgs {};
+  luajit-pro = import <luajit-pro-path>;
+  lua-package = luajit-pro.pkgs.callPackage ./. {};
+  out = lua-package.outPath;
+in pkgs.lib.runTests {
+  test-out = pkgs.lib.testAllTrue [
+    (builtins.pathExists (out + "/lib/lua/5.1/<package-name>/<c-lib>.so"))
+    (builtins.pathExists (out + "/share/lua/5.1/<package-name>/<lua-script>.lua"))
+  ];
+}
+```
+
+Key points:
+- Use `luajit-pro.pkgs.callPackage` to evaluate the package function with luajit-pro's package set
+- This ensures dependencies (like `luacov`) come from luajit-pro's packages
+- Test **actual user-facing files**: C libs (`.so`, `.a`) and Lua scripts (`.lua`), not directory structure
+- Avoid trivial directory existence checks (e.g., checking for `share`, `5.1` directories adds no value)
+- Build the package first with `nix build <expr>` to discover what files are actually installed
+
 ## Testing executables
 
 To test whether an executable works, use `pkgs.runCommand` with `builtins.readFile` to capture and compare output:
