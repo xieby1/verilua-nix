@@ -1,0 +1,3 @@
+- 2026.04.13: Integrate GitHub CI
+  - Execute test suite
+  - Cache build artifacts via Cachix (fetch/build/push)
