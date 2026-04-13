@@ -49,9 +49,32 @@ Run tests with: `nix eval -f test.nix`
 - Instead, build the derivation with `nix-build <path>` first to explore its output, then write tests that check the directory structure of the built result using `builtins.readDir`
 - Only test files that are meaningful to users of the package (e.g. the static and shared libraries for a C library, not intermediate build artifacts like `.o` files)
 
+## Testing executables
+
+To test whether an executable works, use `pkgs.runCommand` with `builtins.readFile` to capture and compare output:
+
+```nix
+test-executable = {
+  expr = builtins.readFile (pkgs.runCommand "test-myexe" {
+    nativeBuildInputs = [ my-package ];
+  } ''
+    ${my-package}/bin/myexe --arg value > $out
+  '');
+  expected = "expected output\n";
+};
+```
+
+Key points:
+- Use `nativeBuildInputs = [ my-package ]` to make the package available in the build environment
+- Write the executable output to `$out` using redirection
+- Wrap the `runCommand` in `builtins.readFile` so Nix evaluates the file content during `nix eval`
+- Compare against the expected string (include trailing newline for `print`-style output)
+
 ## pkgs.lib.testAllTrue
 
-Use `pkgs.lib.testAllTrue` for multiple assertions that all expect `true`. It produces a complete `{ expr, expected }` attrset on its own — do **not** wrap it in another `{ expr = ...; expected = ...; }`:
+**IMPORTANT**: Always combine all standalone test cases that expect `true` into a single `pkgs.lib.testAllTrue`. Do NOT write individual `{ expr = ...; expected = true; }` tests for boolean assertions — this creates unnecessary verbosity and fragmentation.
+
+`pkgs.lib.testAllTrue` produces a complete `{ expr, expected }` attrset on its own — do **not** wrap it in another `{ expr = ...; expected = ...; }`:
 
 ```nix
 # correct
@@ -65,6 +88,10 @@ test-lib = {
   expr = pkgs.lib.testAllTrue [ ... ];
   expected = true;
 };
+
+# wrong — separate expected-true tests
+test-libfoo = { expr = dir ? "libfoo.a"; expected = true; };
+test-libfoo-so = { expr = dir ? "libfoo.so"; expected = true; };
 ```
 
 **Tip**: Merge all expected-true tests into a single `pkgs.lib.testAllTrue` for cleaner test files.
