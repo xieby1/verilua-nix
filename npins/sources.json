@@ -134,6 +134,19 @@
       "revision": "5768e274b50dcc61a3f336f961b80a35adef8706",
       "url": "https://api.github.com/repos/cyril0124/slang/tarball/v9.0",
       "hash": "1bqfqf94cbf1jxj6bl4apwfqpnk5sv3kjm4s3mgxd80k4hr651j3"
+    },
+    "verilua": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "cyril0124",
+        "repo": "verilua"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "4b8324ea4f5872cad237154fb228de178c755c40",
+      "url": "https://github.com/cyril0124/verilua/archive/4b8324ea4f5872cad237154fb228de178c755c40.tar.gz",
+      "hash": "1az3mby3xgrgr4ll2lg2zrq6pz8sq4lm64v6jslkqkywkfy9ylf6"
     }
   },
   "version": 5
