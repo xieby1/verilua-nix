@@ -56,7 +56,7 @@ Lua packages using `buildLuarocksPackage` are functions that take parameters, so
 **Building Lua packages for inspection:**
 
 ```bash
-nix build --expr "let luajit-pro = import ./luajit-pro; in luajit-pro.pkgs.callPackage ./lib/lua/<package> {}"
+nix build --expr "let luajit-pro = import ./luajit-pro; in luajit-pro.pkgs.callPackage ./lib/lua-modules/<package> {}"
 ```
 
 This evaluates the function and builds the resulting derivation, allowing you to inspect its output structure.
