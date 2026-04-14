@@ -49,9 +49,21 @@ The `<npins>` and `<luajit-pro>` syntax works because `shell.nix` exports `NIX_P
 
 ## Testing derivations/packages
 
-- Do **not** write trivial attribute tests (e.g. `version`, `src`, `pname`)
-- Build the derivation with `nix-build <path>` first to explore output
-- Test **actual user-facing files**: C libs (`.so`, `.a`) and Lua scripts (`.lua`)
+**Before writing tests, always build the derivation first:**
+
+```bash
+nix-build <path-to-default.nix> -o result-tmp
+# Explore subdirectories to find actual output files
+```
+
+This reveals:
+- What files/directories the derivation produces
+- The exact path structure to test
+
+**Then write tests for actual user-facing files:** C libs (`.so`, `.a`) and Lua scripts (`.lua`)
+
+Do **not** write trivial attribute tests (e.g. `version`, `src`, `pname`)
+Do **not** write trivial folder existence tests (e.g. test whether folder `lib/`, `bin/`, `lua/` exists)
 
 ## Testing library output
 
@@ -101,4 +113,4 @@ test-lib = {
 
 # References
 
-- `nixpkgs` source code: `$(nix eval --impure --expr "(import $NPINS_DIRECTORY).nixpkgs.outPath")`
+- `nixpkgs` (or `pkgs`) source code: `$(nix eval --impure --expr "(import $NPINS_DIRECTORY).nixpkgs.outPath")`
