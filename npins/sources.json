@@ -16,6 +16,19 @@
       "url": "https://api.github.com/repos/mpeterv/cluacov/tarball/0.1.1",
       "hash": "1j423r3lrm0293lddnpph4xk66p5nmxlw43zmlfwsyrb10ns8igs"
     },
+    "debugger-lua": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "slembcke",
+        "repo": "debugger.lua"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "834dc0c5db329b2e7eab8c471b62a7d69023076a",
+      "url": "https://github.com/slembcke/debugger.lua/archive/834dc0c5db329b2e7eab8c471b62a7d69023076a.tar.gz",
+      "hash": "1ip079mjmdc5nvlaga099g6i3fl5xllnqf1flrs6if9wywa6wh9f"
+    },
     "libassert": {
       "type": "GitRelease",
       "repository": {
