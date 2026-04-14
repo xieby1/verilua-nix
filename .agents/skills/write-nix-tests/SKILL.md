@@ -88,6 +88,7 @@ Run executable and verify output:
 ```nix
 test-executable-runs = let
   output = pkgs.runCommand "test-myexe" {
+    # env is optional, only use it if needed
     env = {
       MY_ENV_VAR = toString npinsed.some-path;
     };
