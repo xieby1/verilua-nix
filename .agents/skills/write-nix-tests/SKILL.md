@@ -71,23 +71,26 @@ Lua packages using `buildLuarocksPackage` are functions that take parameters, so
 **Building Lua packages for inspection:**
 
 ```bash
-nix build --expr "let luajit-pro = import ./luajit-pro; in luajit-pro.pkgs.callPackage ./lib/lua-modules/<package> {}"
+nix-build --expr "let pkgs = import (import <npins>).nixpkgs {}; luajit-pro = import ./luajit-pro; in pkgs.callPackage ./lib/lua-modules/<package> { luaPackages = luajit-pro.pkgs; }"
 ```
 
 This evaluates the function and builds the resulting derivation, allowing you to inspect its output structure.
 
-**Critical distinction:**
-- `pkgs.callPackage` — uses packages defined in nixpkgs (e.g., `pkgs.luacov`)
-- `luajit-pro.pkgs.callPackage` — uses packages specific to luajit-pro
+**How `luaPackages` works:**
 
-This ensures dependencies (like `luacov`) come from luajit-pro's packages.
+Lua module `default.nix` files accept a `luaPackages` argument, making them versatile across different Lua package sets:
+- `luaPackages` — alias of `lua.pkgs` (standard Lua)
+- `luajitPackages` — alias of `luajit.pkgs` (LuaJIT from nixpkgs)
+- `luajit-pro.pkgs` — the custom LuaJIT package set used in this repo
+
+Because `luaPackages` is an explicit argument, use `pkgs.callPackage` (nixpkgs) and pass the desired package set explicitly.
 
 ```nix
 let
   npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {};
   luajit-pro = import ../../../luajit-pro;
-  lua-package = luajit-pro.pkgs.callPackage ./. {};
+  lua-package = pkgs.callPackage ./. { luaPackages = luajit-pro.pkgs; };
   out = lua-package.outPath;
 in pkgs.lib.runTests {
   test-out = pkgs.lib.testAllTrue [
@@ -98,11 +101,11 @@ in pkgs.lib.runTests {
 ```
 
 Key points:
-- Use `luajit-pro.pkgs.callPackage` to evaluate the package function with luajit-pro's package set
-- This ensures dependencies (like `luacov`) come from luajit-pro's packages
+- Use `pkgs.callPackage` (nixpkgs) and pass `luaPackages = luajit-pro.pkgs` explicitly
+- This ensures all Lua dependencies come from the correct package set
 - Test **actual user-facing files**: C libs (`.so`, `.a`) and Lua scripts (`.lua`), not directory structure
 - Avoid trivial directory existence checks (e.g., checking for `share`, `5.1` directories adds no value)
-- Build the package first with `nix build <expr>` to discover what files are actually installed
+- Build the package first with `nix-build <path-to-file.nix>` to discover what files are actually installed
 
 ## Testing executables
 
