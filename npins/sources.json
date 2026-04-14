@@ -74,6 +74,19 @@
       "url": "https://github.com/cyril0124/lsqlite-src/archive/a90275237a4b242adbaa2946901682edf79a4b86.tar.gz",
       "hash": "1275mvmzl7v4bfwkj5n3dd4q2l7ld2avb74zid4yjkqm5szvd8qr"
     },
+    "luafun": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "luafun",
+        "repo": "luafun"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "12837884993a3d25bda8aaf835bb9d79132fcbc6",
+      "url": "https://github.com/luafun/luafun/archive/12837884993a3d25bda8aaf835bb9d79132fcbc6.tar.gz",
+      "hash": "0prgkmn3n6jlq529f49nhbj0b24pjqvmk4gdmnbpsnwa40x9saki"
+    },
     "luajit-pro": {
       "type": "Git",
       "repository": {
