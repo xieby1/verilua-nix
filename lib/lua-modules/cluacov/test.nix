@@ -1,7 +1,7 @@
 let
   npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {};
-  luajit-pro = import ../../../luajit-pro;
+  luajit-pro = import <luajit-pro>;
   cluacov = pkgs.callPackage ./. { luaPackages = luajit-pro.pkgs; };
   out = cluacov.outPath;
 in pkgs.lib.runTests {

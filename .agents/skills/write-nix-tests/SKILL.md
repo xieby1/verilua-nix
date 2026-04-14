@@ -32,9 +32,9 @@ in pkgs.lib.runTests {
 
 Run tests with: `nix eval -f test.nix`
 
-# Using `<npins>` in NIX_PATH
+# Using `<npins>` and `<luajit-pro>` in NIX_PATH
 
-The `<npins>` syntax works because `shell.nix` exports `NIX_PATH=npins=$NPINS_DIRECTORY` in its `shellHook`. This adds `npins` as a known path in Nix's search path, allowing any nix file evaluated in this environment to use `import <npins>` instead of relative paths like `import ../../npins`.
+The `<npins>` and `<luajit-pro>` syntax works because `shell.nix` exports `NIX_PATH=npins=$(realpath ./npins/):luajit-pro=$(realpath ./luajit-pro/)` in its `shellHook`. This adds both names as known paths in Nix's search path, allowing any nix file evaluated in this environment to use `import <npins>` or `import <luajit-pro>` instead of relative paths like `import ../../npins` or `import ../../../luajit-pro`.
 
 **Benefits:**
 - No relative path disasters when moving or renaming files
@@ -42,10 +42,10 @@ The `<npins>` syntax works because `shell.nix` exports `NIX_PATH=npins=$NPINS_DI
 - Cleaner, more readable nix code
 
 **Requirements:**
-- The `NIX_PATH` environment variable must include `npins=<path>`. To achieve this:
+- The `NIX_PATH` environment variable must include both `npins=<path>` and `luajit-pro=<path>`. To achieve this:
   1. Use `nix-shell` or `nix develop`
   2. Use direnv (which automatically runs `nix-shell`)
-  3. Manually add `npins=<path>` to `NIX_PATH`
+  3. Manually add `npins=<path>:luajit-pro=<path>` to `NIX_PATH`
 
 # Common Patterns
 
@@ -71,7 +71,7 @@ Lua packages using `buildLuarocksPackage` are functions that take parameters, so
 **Building Lua packages for inspection:**
 
 ```bash
-nix-build --expr "let pkgs = import (import <npins>).nixpkgs {}; luajit-pro = import ./luajit-pro; in pkgs.callPackage ./lib/lua-modules/<package> { luaPackages = luajit-pro.pkgs; }"
+nix-build --expr "let pkgs = import (import <npins>).nixpkgs {}; luajit-pro = import <luajit-pro>; in pkgs.callPackage ./lib/lua-modules/<package> { luaPackages = luajit-pro.pkgs; }"
 ```
 
 This evaluates the function and builds the resulting derivation, allowing you to inspect its output structure.
@@ -89,7 +89,7 @@ Because `luaPackages` is an explicit argument, use `pkgs.callPackage` (nixpkgs) 
 let
   npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {};
-  luajit-pro = import ../../../luajit-pro;
+  luajit-pro = import <luajit-pro>;
   lua-package = pkgs.callPackage ./. { luaPackages = luajit-pro.pkgs; };
   out = lua-package.outPath;
 in pkgs.lib.runTests {

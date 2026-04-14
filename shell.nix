@@ -6,7 +6,6 @@ in pkgs.mkShell {
     pkgs.npins
   ];
   shellHook = ''
-    export NPINS_DIRECTORY=$(realpath ./npins/)
-    export NIX_PATH=npins=$NPINS_DIRECTORY;
+    export NIX_PATH=npins=$(realpath ./npins/):luajit-pro=$(realpath ./luajit-pro/);
   '';
 }
