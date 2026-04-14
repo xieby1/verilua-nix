@@ -6,6 +6,6 @@ let
 in luaPackages.toLuaModule (pkgs.runCommand "lua${luaversion}-thirdparty_lib" {} ''
   mkdir -p $out/share/lua/${luaversion}
   cp -r ${npinsed.verilua + /src/lua/thirdparty_lib}/* $out/share/lua/${luaversion}
-  rm $out/share/lua/${luaversion}/fun.lua # remove dangled symlink
-  cp -f ${import ../luafun}/share/lua/${luaversion}/fun.lua $out/share/lua/${luaversion}/
+  # remove dangled symlink
+  cp --remove-destination ${npinsed.luafun + /fun.lua} $out/share/lua/${luaversion}/
 '')
