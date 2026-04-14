@@ -32,6 +32,19 @@
       "url": "https://api.github.com/repos/jeremy-rifkin/libassert/tarball/v2.2.1",
       "hash": "1yv8pscw932phcq48ifb8nrhz12r26r72biii0qrd0nd1msyw2d2"
     },
+    "lsqlite-src": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "cyril0124",
+        "repo": "lsqlite-src"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "a90275237a4b242adbaa2946901682edf79a4b86",
+      "url": "https://github.com/cyril0124/lsqlite-src/archive/a90275237a4b242adbaa2946901682edf79a4b86.tar.gz",
+      "hash": "1275mvmzl7v4bfwkj5n3dd4q2l7ld2avb74zid4yjkqm5szvd8qr"
+    },
     "luajit-pro": {
       "type": "Git",
       "repository": {
