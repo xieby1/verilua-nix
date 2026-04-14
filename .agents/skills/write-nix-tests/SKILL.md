@@ -53,6 +53,16 @@ The `<npins>` and `<luajit-pro>` syntax works because `shell.nix` exports `NIX_P
 - Build the derivation with `nix-build <path>` first to explore output
 - Test **actual user-facing files**: C libs (`.so`, `.a`) and Lua scripts (`.lua`)
 
+## Testing library output
+
+For single files, use `builtins.pathExists` which is simpler than `builtins.readDir`:
+
+```nix
+test-libs = pkgs.lib.testAllTrue [
+  (builtins.pathExists (import ./. + /lib/libfoo.so))
+];
+```
+
 ## Testing executables
 
 ```nix
