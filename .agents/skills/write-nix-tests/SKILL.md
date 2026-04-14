@@ -77,16 +77,37 @@ test-libs = pkgs.lib.testAllTrue [
 
 ## Testing executables
 
+Simple existence test:
 ```nix
-test-executable = {
-  expr = builtins.readFile (pkgs.runCommand "test-myexe" {
-    nativeBuildInputs = [ my-package ];
-  } ''
-    ${my-package}/bin/myexe --arg value > $out
-  '');
-  expected = "expected output\n";
-};
+test-executable = pkgs.lib.testAllTrue [
+  (builtins.pathExists (my-derivation + /bin/myexe))
+];
 ```
+
+Run executable and verify output:
+```nix
+test-executable-runs = let
+  output = pkgs.runCommand "test-myexe" {
+    env = {
+      MY_ENV_VAR = toString npinsed.some-path;
+    };
+  } ''
+    ${my-derivation}/bin/myexe --help > $out 2>&1 || true
+  '';
+  content = builtins.readFile output;
+in pkgs.lib.testAllTrue [
+  (builtins.stringLength content > 100)
+  (pkgs.lib.hasPrefix "<some-pattern>" content)
+];
+```
+
+**Notes:**
+- Use `env` attribute to set environment variables required by the executable
+- `env` values must be derivations, strings, booleans, or integers — use `toString` for paths
+- Redirect stderr to stdout (`2>&1`) to capture all output
+- Use `|| true` if the executable may return non-zero exit code (e.g., `--help` often does)
+- Check for representative content (prefix, length) rather than exact match
+- Use `builtins.stringLength` (not `pkgs.stringWidth`) to check string length
 
 ## pkgs.lib.testAllTrue
 

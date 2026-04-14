@@ -1,5 +1,21 @@
 {
   "pins": {
+    "boost_unordered": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "MikePopoloski",
+        "repo": "boost_unordered"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
+      "submodules": false,
+      "version": "v1.85.1",
+      "revision": "0c35831302a5730052582de15b31a71c2c52f1e4",
+      "url": "https://api.github.com/repos/MikePopoloski/boost_unordered/tarball/v1.85.1",
+      "hash": "19p9r54f068831iglvm8h7yg5k6mfhhvj5hpsfknl0jkls2wp390"
+    },
     "cluacov": {
       "type": "GitRelease",
       "repository": {
@@ -134,6 +150,19 @@
       "revision": "5768e274b50dcc61a3f336f961b80a35adef8706",
       "url": "https://api.github.com/repos/cyril0124/slang/tarball/v9.0",
       "hash": "1bqfqf94cbf1jxj6bl4apwfqpnk5sv3kjm4s3mgxd80k4hr651j3"
+    },
+    "slang-common": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "cyril0124",
+        "repo": "slang-common"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "fa648a420351fe66c6f9dbe508657dfcdd26e626",
+      "url": "https://github.com/cyril0124/slang-common/archive/fa648a420351fe66c6f9dbe508657dfcdd26e626.tar.gz",
+      "hash": "0z72d0wyq7d5n9xj9jksq083lf0fa6hyhpq2hxaac9l74dnmp0f1"
     },
     "verilua": {
       "type": "Git",
