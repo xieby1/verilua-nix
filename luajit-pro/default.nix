@@ -1,5 +1,5 @@
 let
-  npinsed = import ../npins;
+  npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {
     # Overlay is needed because:
     # * luarocks needs lua.luaOnBuild, see <nixpkgs>/pkgs/development/tools/misc/luarocks/default.nix

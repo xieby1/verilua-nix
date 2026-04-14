@@ -1,5 +1,5 @@
 let
-  npinsed = import ../../npins;
+  npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {};
   slang = import ./default.nix {};
 in pkgs.lib.runTests {

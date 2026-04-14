@@ -7,5 +7,6 @@ in pkgs.mkShell {
   ];
   shellHook = ''
     export NPINS_DIRECTORY=$(realpath ./npins/)
+    export NIX_PATH=npins=$NPINS_DIRECTORY;
   '';
 }

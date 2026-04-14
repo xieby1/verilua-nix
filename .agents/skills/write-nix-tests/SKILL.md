@@ -19,7 +19,7 @@ Tests use `nix eval -f test.nix` — success when output is `[ ]` (empty list).
 
 ```nix
 let
-  npinsed = import ../../npins;
+  npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {};
   my-derivation = import ./.;
 in pkgs.lib.runTests {
@@ -31,6 +31,21 @@ in pkgs.lib.runTests {
 ```
 
 Run tests with: `nix eval -f test.nix`
+
+# Using `<npins>` in NIX_PATH
+
+The `<npins>` syntax works because `shell.nix` exports `NIX_PATH=npins=$NPINS_DIRECTORY` in its `shellHook`. This adds `npins` as a known path in Nix's search path, allowing any nix file evaluated in this environment to use `import <npins>` instead of relative paths like `import ../../npins`.
+
+**Benefits:**
+- No relative path disasters when moving or renaming files
+- Consistent import syntax across all nix files regardless of directory depth
+- Cleaner, more readable nix code
+
+**Requirements:**
+- The `NIX_PATH` environment variable must include `npins=<path>`. To achieve this:
+  1. Use `nix-shell` or `nix develop`
+  2. Use direnv (which automatically runs `nix-shell`)
+  3. Manually add `npins=<path>` to `NIX_PATH`
 
 # Common Patterns
 
@@ -69,9 +84,9 @@ This ensures dependencies (like `luacov`) come from luajit-pro's packages.
 
 ```nix
 let
-  npinsed = import <npins-path>;
+  npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {};
-  luajit-pro = import <luajit-pro-path>;
+  luajit-pro = import ../../../luajit-pro;
   lua-package = luajit-pro.pkgs.callPackage ./. {};
   out = lua-package.outPath;
 in pkgs.lib.runTests {
@@ -138,7 +153,7 @@ test-libfoo-so = { expr = dir ? "libfoo.so"; expected = true; };
 
 # Naming Conventions
 
-- Use `npinsed` for the npins attribute set (e.g., `import ../../npins`) to distinguish from `pkgs.npins`
+- Use `npinsed` for the npins attribute set (e.g., `import <npins>`) to distinguish from `pkgs.npins`
 - Use `pkgs` for the nixpkgs instance derived from npinsed
 
 # References

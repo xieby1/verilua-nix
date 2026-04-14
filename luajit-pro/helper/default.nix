@@ -1,5 +1,5 @@
 let
-  npinsed = import ../../npins;
+  npinsed = import <npins>;
   pkgs = import npinsed.nixpkgs {};
 in pkgs.rustPlatform.buildRustPackage (finalAttrs: {
   name = "luajit-pro-help";
