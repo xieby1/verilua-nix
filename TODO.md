@@ -1,3 +1,5 @@
 - 2026.04.13: Integrate GitHub CI
   - Execute test suite
   - Cache build artifacts via Cachix (fetch/build/push)
+- 2026.04.15: Redundancy/Duplication check in source and built output (texts, binaries)
+  - jscpd, scc -a
