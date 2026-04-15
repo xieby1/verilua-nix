@@ -25,10 +25,11 @@ in pkgs.stdenv.mkDerivation {
       "-std=c++20"
       # ignal_db_gen.cpp uses std::cerr but not include iostream
       "-include iostream"
-      "*.cpp" "${npinsed.slang-common}/*.cpp"
+      "*.cpp"
+      "${npinsed.verilua}/extern/slang-common/*.cpp"
       "-DSLANG_BOOST_SINGLE_HEADER"
-      "-I${npinsed.slang-common}"
-      "-I${npinsed.boost_unordered}"
+      "-I${npinsed.verilua}/extern/slang-common"
+      "-I${npinsed.verilua}/extern/boost_unordered"
       # TODO: <libs_dir>/include
       # TODO: <lua_dir>/include/luajit-2.1
       "-lsvlang" "-lfmt" "-lmimalloc"

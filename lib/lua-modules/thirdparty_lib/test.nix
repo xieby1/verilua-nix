@@ -14,6 +14,6 @@ in pkgs.lib.runTests {
       "fun.lua"
     ];
     check-module = mod:
-      (builtins.readDir (my-derivation + /share/lua/5.1)).${mod} == "regular";
+      builtins.pathExists (my-derivation + "/share/lua/5.1/${mod}");
   in pkgs.lib.testAllTrue (map check-module lua_modules);
 }

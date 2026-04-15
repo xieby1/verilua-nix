@@ -11,13 +11,13 @@ let
     overlays = [(final: prev: {
       luajit-pro = (final.luajit_openresty.override {
         self = final.luajit-pro;
-        src = npinsed.luajit2;
+        src = npinsed.verilua + /luajit-pro/luajit2.1;
         # Nix lua only satisfies with semver scheme.
         version = "2.1.20260318";
         luaAttr = "luajit-pro";
       }).overrideAttrs (old: {
         postPatch = ''
-          cp -f ${npinsed.luajit-pro}/patch/src/* src/
+          cp -sf ${npinsed.verilua}/luajit-pro/patch/src/* src/
           # Nix can handle the ldflags, so remove the patched one
           sed -i 's,-Wl.*target/release),,' src/Makefile
         '' + old.postPatch;

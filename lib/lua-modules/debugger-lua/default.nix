@@ -4,5 +4,5 @@ let
 in luaPackages.buildLuarocksPackage {
   pname = "debugger-lua";
   version = "scm-1";
-  src = npinsed.debugger-lua;
+  src = npinsed.verilua + /extern/debugger.lua;
 }

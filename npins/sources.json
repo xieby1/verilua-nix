@@ -1,21 +1,5 @@
 {
   "pins": {
-    "boost_unordered": {
-      "type": "GitRelease",
-      "repository": {
-        "type": "GitHub",
-        "owner": "MikePopoloski",
-        "repo": "boost_unordered"
-      },
-      "pre_releases": false,
-      "version_upper_bound": null,
-      "release_prefix": null,
-      "submodules": false,
-      "version": "v1.85.1",
-      "revision": "0c35831302a5730052582de15b31a71c2c52f1e4",
-      "url": "https://api.github.com/repos/MikePopoloski/boost_unordered/tarball/v1.85.1",
-      "hash": "19p9r54f068831iglvm8h7yg5k6mfhhvj5hpsfknl0jkls2wp390"
-    },
     "cluacov": {
       "type": "GitRelease",
       "repository": {
@@ -31,19 +15,6 @@
       "revision": "ca8e019e1f61b7f3f2c2d37f2728a741dc167cc5",
       "url": "https://api.github.com/repos/mpeterv/cluacov/tarball/0.1.1",
       "hash": "1j423r3lrm0293lddnpph4xk66p5nmxlw43zmlfwsyrb10ns8igs"
-    },
-    "debugger-lua": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "slembcke",
-        "repo": "debugger.lua"
-      },
-      "branch": "master",
-      "submodules": false,
-      "revision": "834dc0c5db329b2e7eab8c471b62a7d69023076a",
-      "url": "https://github.com/slembcke/debugger.lua/archive/834dc0c5db329b2e7eab8c471b62a7d69023076a.tar.gz",
-      "hash": "1ip079mjmdc5nvlaga099g6i3fl5xllnqf1flrs6if9wywa6wh9f"
     },
     "libassert": {
       "type": "GitRelease",
@@ -73,58 +44,6 @@
       "revision": "a90275237a4b242adbaa2946901682edf79a4b86",
       "url": "https://github.com/cyril0124/lsqlite-src/archive/a90275237a4b242adbaa2946901682edf79a4b86.tar.gz",
       "hash": "1275mvmzl7v4bfwkj5n3dd4q2l7ld2avb74zid4yjkqm5szvd8qr"
-    },
-    "luafun": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "luafun",
-        "repo": "luafun"
-      },
-      "branch": "master",
-      "submodules": false,
-      "revision": "12837884993a3d25bda8aaf835bb9d79132fcbc6",
-      "url": "https://github.com/luafun/luafun/archive/12837884993a3d25bda8aaf835bb9d79132fcbc6.tar.gz",
-      "hash": "0prgkmn3n6jlq529f49nhbj0b24pjqvmk4gdmnbpsnwa40x9saki"
-    },
-    "luajit-pro": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "cyril0124",
-        "repo": "luajit-pro"
-      },
-      "branch": "master",
-      "submodules": true,
-      "revision": "a26604a0ca677d88fb60cf86f9d68970dca95eed",
-      "url": null,
-      "hash": "1a8f0d03hj7rywr670j5l725d33jdaz3w3pvppmf6h2kbb64n0mc"
-    },
-    "luajit2": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "cyril0124",
-        "repo": "luajit2"
-      },
-      "branch": "op53-dev",
-      "submodules": false,
-      "revision": "3c7b05b4f8d2912be1876e4cbcbe81eb8ae2d120",
-      "url": "https://github.com/cyril0124/luajit2/archive/3c7b05b4f8d2912be1876e4cbcbe81eb8ae2d120.tar.gz",
-      "hash": "0zwikciklj0x78m1bwhaw6qcdkiz22d6jpjyry12ppz7fdaq4fwx"
-    },
-    "luajit_tcc": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "cyril0124",
-        "repo": "luajit_tcc"
-      },
-      "branch": "master",
-      "submodules": false,
-      "revision": "349f4c497f46d9b4c87932ae3cacf70e28bc9ea3",
-      "url": "https://github.com/cyril0124/luajit_tcc/archive/349f4c497f46d9b4c87932ae3cacf70e28bc9ea3.tar.gz",
-      "hash": "1wh5vx69g0rdj1vm2wja390b1jqkmwa4aggj2dhifq01df2w17pp"
     },
     "mimalloc2": {
       "type": "GitRelease",
@@ -164,19 +83,6 @@
       "url": "https://api.github.com/repos/cyril0124/slang/tarball/v9.0",
       "hash": "1bqfqf94cbf1jxj6bl4apwfqpnk5sv3kjm4s3mgxd80k4hr651j3"
     },
-    "slang-common": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "cyril0124",
-        "repo": "slang-common"
-      },
-      "branch": "master",
-      "submodules": false,
-      "revision": "fa648a420351fe66c6f9dbe508657dfcdd26e626",
-      "url": "https://github.com/cyril0124/slang-common/archive/fa648a420351fe66c6f9dbe508657dfcdd26e626.tar.gz",
-      "hash": "0z72d0wyq7d5n9xj9jksq083lf0fa6hyhpq2hxaac9l74dnmp0f1"
-    },
     "verilua": {
       "type": "Git",
       "repository": {
@@ -185,10 +91,10 @@
         "repo": "verilua"
       },
       "branch": "master",
-      "submodules": false,
+      "submodules": true,
       "revision": "4b8324ea4f5872cad237154fb228de178c755c40",
-      "url": "https://github.com/cyril0124/verilua/archive/4b8324ea4f5872cad237154fb228de178c755c40.tar.gz",
-      "hash": "1az3mby3xgrgr4ll2lg2zrq6pz8sq4lm64v6jslkqkywkfy9ylf6"
+      "url": null,
+      "hash": "1chd7z0n56vkhmmr0q961yyc0qydyys1gz3n5jrgh4f5y3vg2npx"
     }
   },
   "version": 5

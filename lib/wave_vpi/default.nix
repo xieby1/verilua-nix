@@ -19,7 +19,7 @@ in pkgs.stdenv.mkDerivation rec {
     "src/jit_options.cpp"
     "src/fsdb_wave_vpi.cpp"
     "src/vpi_compat_wellen.cpp"
-    "-I${npinsed.boost_unordered}"
+    "-I${npinsed.verilua}/extern/boost_unordered"
     "-I./include"
     # TODO: the <verilua>/src/include/vpi_user.h <verilua>/src/include/svdpi.h is redundant, include it from verilator or other simulator.
     "-I${npinsed.verilua + /src/include}"
