@@ -1,0 +1,72 @@
+# IMPORTANT: ./default.nix (this file) should be used independently from ./shell.nix, therefore:
+# - `<npins>` and `<luajit-pro>` are unavailable since $NIX_PATH does not define them.
+# - `<nixpkgs>` is avoided for purity. Use `npinsed.nixpkgs` instead.
+let
+  npinsed = import ./npins;
+  pkgs = import npinsed.nixpkgs {};
+  luajit-pro-with-packages = (import ./luajit-pro).withPackages (luaPackages: [
+    luaPackages.penlight
+    luaPackages.luasocket
+    luaPackages.linenoise
+    luaPackages.argparse
+    (import ./lib/lua-modules/cluacov)
+    (import ./lib/lua-modules/lsqlite {complete = false;})
+    (import ./lib/lua-modules/lsqlite {complete = true;})
+    (import ./lib/lua-modules/tcc)
+    (import ./lib/lua-modules/verilua)
+    (import ./lib/lua-modules/thirdparty_lib)
+    (import ./lib/lua-modules/verilua-src-lua)
+    # TODO: The submodule debugger.lua is redundant, can be removed
+    (import ./lib/lua-modules/debugger-lua)
+  ]);
+  verilua_home = pkgs.symlinkJoin {
+    name = "VERILUA_HOME";
+    paths = [npinsed.verilua];
+    postBuild = ''
+      mkdir -p $out/tools
+      ln -s ${import ./lib/testbench_gen}/bin/testbench_gen $out/tools/
+
+      ln -s ${luajit-pro-with-packages}/include $out/luajit-pro/luajit2.1/
+      ln -s ${luajit-pro-with-packages}/lib $out/luajit-pro/luajit2.1/
+
+      mkdir -p $out/conan_installed/include
+      mkdir -p $out/conan_installed/lib
+
+      mkdir -p $out/shared
+    '';
+  };
+in pkgs.stdenv.mkDerivation {
+  name = "verilua-envs";
+  dontUnpack = true;
+  # TODO: The following dependencies are currently not used by default.nix,
+  #       which means the examples can be run without these dependencies.
+  #       Are these dependencies redundant?
+  #       pkgs.gmp
+  #       pkgs.tinycc
+  #       (import ./lib/signal_db_gen)
+  #       (import ./lib/dpi_exporter)
+  #       (import ./lib/cov_exporter)
+  propagatedBuildInputs = [
+    (import ./xmake)
+    pkgs.verilator
+    luajit-pro-with-packages
+    (import ./lib/libverilua)
+    (import ./lib/wave_vpi)
+  ];
+  envs = ''
+    export VERILUA_HOME=${verilua_home}
+
+    # As nixpkgs has auto set LUA_PATH and LUA_CPATH of luajit-pro.withPackages(...),
+    # why we still need to export?
+    # Because of xmake!
+    # Xmake embed a lua/luajit in its binary. It does not utilize the user's lua.
+    # So to xmake happy (xmake needs to access verilua lua files), we need to export LUA_PATH and LUA_CPATH.
+    export LUA_PATH=${luajit-pro-with-packages.luaPath}
+    export LUA_CPATH=${luajit-pro-with-packages.luaCpath}
+  '';
+  passAsFile = ["envs"];
+  installPhase = ''
+    mkdir $out
+    cp $envsPath $out/envs
+  '';
+}
