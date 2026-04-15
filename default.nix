@@ -48,7 +48,6 @@ in pkgs.stdenv.mkDerivation {
   #       (import ./lib/cov_exporter)
   propagatedBuildInputs = [
     (import ./xmake)
-    pkgs.verilator
     luajit-pro-with-packages
     (import ./lib/libverilua)
     (import ./lib/wave_vpi)

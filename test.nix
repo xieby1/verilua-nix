@@ -13,7 +13,6 @@ in pkgs.lib.runTests {
   ];
   test-propagated-build-inputs = pkgs.lib.testAllTrue [
     (pkgs.lib.hasInfix "xmake-verilua-flavored" propagated-content)
-    (pkgs.lib.hasInfix "verilator" propagated-content)
     (pkgs.lib.hasInfix "luajit" propagated-content)
     (pkgs.lib.hasInfix "libverilua" propagated-content)
     (pkgs.lib.hasInfix "wave_vpi" propagated-content)
