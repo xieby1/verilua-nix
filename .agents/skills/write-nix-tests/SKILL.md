@@ -47,6 +47,31 @@ The `<npins>` and `<luajit-pro>` syntax works because `shell.nix` exports `NIX_P
 - Use `builtins.tryEval` to test code that should fail
 - When importing `default.nix`, use `import ./.` instead of `import ./default.nix`
 
+## Testing nix scripts with arguments
+
+If `default.nix` takes arguments (e.g., `{ complete }:`), import it with different argument values and test each variant. Combine all assertions into a single `pkgs.lib.testAllTrue`:
+
+```nix
+let
+  npinsed = import <npins>;
+  pkgs = import npinsed.nixpkgs {};
+  my-derivation = import ./. { arg1 = false; };
+  my-derivation-complete = import ./. { arg1 = true; };
+in pkgs.lib.runTests {
+  test-lib = pkgs.lib.testAllTrue [
+    ((builtins.readDir "${my-derivation}/lib") ? "libfoo.so")
+    ((builtins.readDir "${my-derivation-complete}/lib") ? "libfoocomplete.so")
+  ];
+}
+
+Run tests with: `nix eval -f test.nix`
+
+**Building with arguments:**
+```bash
+nix-build lib/lua-modules/lsqlite/default.nix --arg complete false -o result-tmp
+nix-build lib/lua-modules/lsqlite/default.nix --arg complete true -o result-tmp
+```
+
 ## Testing derivations/packages
 
 **Before writing tests, always build the derivation first:**
