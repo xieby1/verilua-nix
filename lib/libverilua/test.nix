@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
   libverilua = import ./.;
 in pkgs.lib.runTests {

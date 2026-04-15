@@ -19,7 +19,7 @@ Tests use `nix eval -f test.nix` — success when output is `[ ]` (empty list).
 
 ```nix
 let
-  npinsed = import <npins>;
+  npinsed = import <path-to-npins>;  # relative path, e.g. ../../npins
   pkgs = import npinsed.nixpkgs {};
   my-derivation = import ./.;
 in pkgs.lib.runTests {
@@ -32,12 +32,34 @@ in pkgs.lib.runTests {
 
 Run tests with: `nix eval -f test.nix`
 
-# Using `<npins>` and `<luajit-pro>` in NIX_PATH
+# Relative Paths for `npins` and `luajit-pro`
 
-The `<npins>` and `<luajit-pro>` syntax works because `shell.nix` exports `NIX_PATH=npins=$(realpath ./npins/):luajit-pro=$(realpath ./luajit-pro/)` in its `shellHook`.
+**Do not use `<npins>` or `<luajit-pro>` angle brackets** — they require `NIX_PATH` to be set and break when nix-build is run from outside the project directory.
 
-**Requirements:**
-- Use `nix-shell`, `nix develop`, or direnv to ensure `NIX_PATH` is set
+Instead, use **relative paths** from each file's location to the repo root directories:
+
+| File location           | npins path         | luajit-pro path         |
+|-------------------------|--------------------|-------------------------|
+| `foo/default.nix`       | `../npins`         | `../luajit-pro`         |
+| `foo/bar/default.nix`   | `../../npins`      | `../../luajit-pro`      |
+| `foo/bar/baz/default.nix` | `../../../npins` | `../../../luajit-pro`   |
+
+Example for a file at depth 2 (e.g., `lib/mimalloc2/default.nix`):
+```nix
+let
+  npinsed = import ../../npins;
+  pkgs = import npinsed.nixpkgs {};
+in ...
+```
+
+Example with luajit-pro at depth 3 (e.g., `lib/lua-modules/tcc/default.nix`):
+```nix
+let
+  npinsed = import ../../../npins;
+  pkgs = import npinsed.nixpkgs {};
+  luaPackages = (import ../../../luajit-pro).pkgs;
+in ...
+```
 
 # Common Patterns
 
@@ -53,7 +75,7 @@ If `default.nix` takes arguments (e.g., `{ complete }:`), import it with differe
 
 ```nix
 let
-  npinsed = import <npins>;
+  npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
   my-derivation = import ./. { arg1 = false; };
   my-derivation-complete = import ./. { arg1 = true; };

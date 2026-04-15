@@ -1,7 +1,7 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../../npins;
   pkgs = import npinsed.nixpkgs {};
-  luaPackages = (import <luajit-pro>).pkgs;
+  luaPackages = (import ../../../luajit-pro).pkgs;
   inherit (luaPackages.lua) luaversion;
   tcc-module = import ./.;
 in pkgs.lib.runTests {

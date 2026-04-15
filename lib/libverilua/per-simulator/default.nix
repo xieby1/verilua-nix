@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../../npins;
   pkgs = import npinsed.nixpkgs {};
 in {
   simulator,
@@ -16,7 +16,7 @@ in {
     pkgs.pkg-config
   ];
   buildInputs = [
-    (import <luajit-pro>)
+    (import ../../../luajit-pro)
   ];
   # TODO: support other simulators
   # "verilator_i"

@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
 in pkgs.stdenv.mkDerivation rec {
   name = "cov_exporter";
@@ -16,7 +16,7 @@ in pkgs.stdenv.mkDerivation rec {
     pkgs.zstd
     pkgs.libz
     # TODO: Does this luajit-pro needs withPackages?
-    (import <luajit-pro>)
+    (import ../../luajit-pro)
   ];
   # TODO: use build tool? For example Makefile.
   buildPhase = [

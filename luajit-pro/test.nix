@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../npins;
   pkgs = import npinsed.nixpkgs {};
   luajit-pro = import ./.;
   out = luajit-pro.outPath;

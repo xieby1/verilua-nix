@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../../npins;
   pkgs = import npinsed.nixpkgs {};
   lsqlite = import ./. { complete = false; };
   lsqlite-complete = import ./. { complete = true; };

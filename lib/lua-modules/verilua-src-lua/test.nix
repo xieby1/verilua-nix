@@ -1,7 +1,7 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../../npins;
   pkgs = import npinsed.nixpkgs {};
-  luajit-pro = import <luajit-pro>;
+  luajit-pro = import ../../../luajit-pro;
   luaPackages = luajit-pro.pkgs;
   inherit (luaPackages.lua) luaversion;
   dut = import ./.;

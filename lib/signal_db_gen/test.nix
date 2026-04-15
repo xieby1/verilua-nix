@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
   signal_db_gen = import ./.;
 in pkgs.lib.runTests {

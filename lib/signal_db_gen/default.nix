@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
 in pkgs.stdenv.mkDerivation {
   name = "signal_db_gen";
@@ -15,7 +15,7 @@ in pkgs.stdenv.mkDerivation {
     pkgs.zstd
     pkgs.libz
     # TODO: Does this luajit-pro needs withPackages?
-    (import <luajit-pro>)
+    (import ../../luajit-pro)
   ];
   buildPhase = let
     cxx_common_cmd = [

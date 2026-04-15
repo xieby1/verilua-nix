@@ -1,5 +1,5 @@
 let
-  npinsed = import <npins>;
+  npinsed = import ../../../npins;
   pkgs = import npinsed.nixpkgs {};
 in pkgs.rustPlatform.buildRustPackage {
   name = "libwave_vpi_wellen_impl";

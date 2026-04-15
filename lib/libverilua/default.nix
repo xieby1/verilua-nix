@@ -1,5 +1,5 @@
 let
-  pkgs = import <nixpkgs> {};
+  pkgs = import (import ../../npins).nixpkgs {};
 in pkgs.symlinkJoin {
   name = "libverilua";
   paths = pkgs.lib.map (simulator: import ./per-simulator {inherit simulator;}) [

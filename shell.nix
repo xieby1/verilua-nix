@@ -6,7 +6,4 @@ in pkgs.mkShell {
   packages = [
     pkgs.npins
   ];
-  shellHook = ''
-    export NIX_PATH=nixpkgs=${npinsed.nixpkgs}:npins=$(realpath ./npins/):luajit-pro=$(realpath ./luajit-pro/);
-  '';
 }
