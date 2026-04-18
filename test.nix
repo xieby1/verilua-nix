@@ -2,14 +2,12 @@ let
   npinsed = import ./npins;
   pkgs = import npinsed.nixpkgs {};
   my-derivation = import ./.;
-  envs-content = builtins.readFile (my-derivation + /envs);
   propagated-content = builtins.readFile (my-derivation + /nix-support/propagated-build-inputs);
 in pkgs.lib.runTests {
-  test-envs = pkgs.lib.testAllTrue [
-    (builtins.pathExists (my-derivation + /envs))
-    (pkgs.lib.hasPrefix "export VERILUA_HOME=" envs-content)
-    (pkgs.lib.hasInfix "export LUA_PATH=" envs-content)
-    (pkgs.lib.hasInfix "export LUA_CPATH=" envs-content)
+  test-shellHook = pkgs.lib.testAllTrue [
+    (pkgs.lib.hasPrefix "export VERILUA_HOME=" my-derivation.shellHook)
+    (pkgs.lib.hasInfix "export LUA_PATH=" my-derivation.shellHook)
+    (pkgs.lib.hasInfix "export LUA_CPATH=" my-derivation.shellHook)
   ];
   test-propagated-build-inputs = pkgs.lib.testAllTrue [
     (pkgs.lib.hasInfix "xmake-verilua-flavored" propagated-content)

@@ -52,7 +52,7 @@ in pkgs.stdenv.mkDerivation {
     (import ./lib/libverilua)
     (import ./lib/wave_vpi)
   ];
-  envs = ''
+  shellHook = ''
     export VERILUA_HOME=${verilua_home}
 
     # As nixpkgs has auto set LUA_PATH and LUA_CPATH of luajit-pro.withPackages(...),
@@ -63,9 +63,7 @@ in pkgs.stdenv.mkDerivation {
     export LUA_PATH=${luajit-pro-with-packages.luaPath}
     export LUA_CPATH=${luajit-pro-with-packages.luaCpath}
   '';
-  passAsFile = ["envs"];
   installPhase = ''
     mkdir $out
-    cp $envsPath $out/envs
   '';
 }
