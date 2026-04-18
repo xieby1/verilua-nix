@@ -2,6 +2,7 @@
 """Generate an interactive Plotly chart of closure_size over time from dolt quality CSV."""
 
 import csv
+import subprocess
 import sys
 from datetime import datetime
 
@@ -9,6 +10,20 @@ import plotly.graph_objects as go
 
 REPO_URL = "https://github.com/xieby1/verilua-nix"
 MAX_POINTS = 30
+
+
+def get_commit_message(commit_hash):
+    """Get the commit message for a given commit hash."""
+    try:
+        result = subprocess.run(
+            ["git", "log", "-1", "--format=%s", commit_hash],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return result.stdout.strip()
+    except subprocess.CalledProcessError:
+        return "Unknown commit"
 
 
 def main():
@@ -27,15 +42,17 @@ def main():
     date_labels = []
     sizes_mb = []
     urls = []
+    messages = []
 
     for row in rows:
         dt = datetime.fromtimestamp(int(row["date"]))
         size_mb = int(row["closure_size"]) / (1024 * 1024)
-        commit = row["commit_hash"]
+        commit_hash = row["commit_hash"]
 
         date_labels.append(dt.strftime("%Y-%m-%d"))
         sizes_mb.append(round(size_mb, 2))
-        urls.append(f"{REPO_URL}/commit/{commit}")
+        urls.append(f"{REPO_URL}/commit/{commit_hash}")
+        messages.append(get_commit_message(commit_hash))
 
     # Use integer indices for uniform spacing, dates as tick labels
     x_indices = list(range(len(rows)))
@@ -46,8 +63,9 @@ def main():
         y=sizes_mb,
         mode="lines+markers",
         marker=dict(size=8),
-        customdata=list(zip(urls, date_labels)),
+        customdata=list(zip(urls, date_labels, messages)),
         hovertemplate=(
+            "Commit: %{customdata[2]}<br>"
             "%{customdata[0]}<br>"
             "Date: %{customdata[1]}<br>"
             "Closure size: %{y:.2f} MB<br>"
