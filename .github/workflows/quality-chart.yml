@@ -1,0 +1,55 @@
+name: Quality Chart
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v31.10.4
+
+      - name: Export quality data from dolt
+        run: |
+          nix-shell --run '
+            remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            dolt clone "${remote}" .
+            dolt table export -f quality quality.csv
+          '
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate chart
+        run: |
+          nix-shell --run "python3 generate_chart.py quality.csv"
+
+      - uses: actions/configure-pages@v5
+
+      - name: Prepare pages artifact
+        run: |
+          mkdir -p _site
+          mv index.html _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+          retention-days: 1
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
