@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -21,21 +21,56 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: cachix/install-nix-action@v31.10.4
 
-      - name: Export quality data from dolt
+      - name: Clone dolt database
         run: |
           nix-shell --run '
             remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
             dolt clone "${remote}" .
-            dolt table export -f quality quality.csv
           '
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate chart
+      - name: Update quality table for new commits
         run: |
+          nix-shell --run '
+            for commit in $(git -C "$GITHUB_WORKSPACE" rev-list --reverse ${{ github.event.before }}..${{ github.event.after }}); do
+              if dolt sql -q "SELECT * FROM quality WHERE commit_hash = '"'"'${commit}'"'"';" | grep "${commit}" > /dev/null; then
+                echo "commit ${commit} already in dolt database, skipping"
+                continue
+              fi
+              echo "Building commit ${commit}..."
+              git -C "$GITHUB_WORKSPACE" checkout "${commit}"
+              result=$(nix-build "$GITHUB_WORKSPACE" 2>/dev/null) || { echo "nix-build failed for ${commit}, skipping"; continue; }
+              closure_size=$(nix path-info -S "${result}" | awk "{print \$2}")
+              build_date=$(git -C "$GITHUB_WORKSPACE" log -1 --format=%ct "${commit}")
+              query="INSERT INTO quality (date, closure_size, commit_hash) VALUES (${build_date}, ${closure_size}, '"'"'${commit}'"'"');"
+              dolt sql -q "${query}"
+              echo "Inserted: ${commit} closure_size=${closure_size}"
+            done
+            git -C "$GITHUB_WORKSPACE" checkout ${{ github.sha }}
+          '
+
+      - name: Push dolt changes
+        run: |
+          nix-shell --run '
+            dolt add .
+            dolt commit --allow-empty -m "Update quality data" --author "GitHub Actions <actions@github.com>"
+            remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            dolt push "${remote}" main
+          '
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Export quality data and generate chart
+        run: |
+          nix-shell --run '
+            dolt table export -f quality quality.csv
+          '
           nix-shell --run "python3 generate_chart.py quality.csv"
 
       - uses: actions/configure-pages@v5
