@@ -62,11 +62,8 @@ jobs:
           nix-shell --run '
             dolt add .
             dolt commit --allow-empty -m "Update quality data" --author "GitHub Actions <actions@github.com>"
-            remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-            dolt push "${remote}" main
+            dolt push origin main
           '
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Export quality data and generate chart
         run: |
