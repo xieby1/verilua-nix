@@ -67,6 +67,19 @@
       "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.9067.54170c54449e/nixexprs.tar.xz",
       "hash": "16yz0vih085sf70dg2nprblrrf1cqm95riym51h4n7hds4imgfjl"
     },
+    "nixpkgs-unstable": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "NixOS",
+        "repo": "nixpkgs"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "6df0e717090e8de99647233b446819b0967d9f36",
+      "url": "https://github.com/NixOS/nixpkgs/archive/6df0e717090e8de99647233b446819b0967d9f36.tar.gz",
+      "hash": "1k15lwnwimhr8v34909qp8jszcx5xhpsajh10ix5ynlzbcpsxx5l"
+    },
     "slang": {
       "type": "GitRelease",
       "repository": {
