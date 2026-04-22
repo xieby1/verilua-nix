@@ -51,6 +51,7 @@ in pkgs.stdenv.mkDerivation {
     luajit-pro-with-packages
     (import ./lib/libverilua)
     (import ./lib/wave_vpi)
+    (import ./lib/testbench_gen)
   ];
   shellHook = ''
     export VERILUA_HOME=${verilua_home}
