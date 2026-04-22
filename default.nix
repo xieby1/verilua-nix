@@ -20,19 +20,20 @@ let
     (import ./lib/lua-modules/debugger-lua)
   ]);
   verilua_home = pkgs.symlinkJoin {
+  verilua_home = pkgs.applyPatches {
     name = "VERILUA_HOME";
-    paths = [npinsed.verilua];
-    postBuild = ''
-      mkdir -p $out/tools
-      ln -s ${import ./lib/testbench_gen}/bin/testbench_gen $out/tools/
+    src = npinsed.verilua;
+    postPatch = ''
+      mkdir -p tools
+      ln -s ${import ./lib/testbench_gen}/bin/testbench_gen tools/
 
-      ln -s ${luajit-pro-with-packages}/include $out/luajit-pro/luajit2.1/
-      ln -s ${luajit-pro-with-packages}/lib $out/luajit-pro/luajit2.1/
+      ln -s ${luajit-pro-with-packages}/include luajit-pro/luajit2.1/
+      ln -s ${luajit-pro-with-packages}/lib luajit-pro/luajit2.1/
 
-      mkdir -p $out/conan_installed/include
-      mkdir -p $out/conan_installed/lib
+      mkdir -p conan_installed/include
+      mkdir -p conan_installed/lib
 
-      mkdir -p $out/shared
+      mkdir -p shared
     '';
   };
 in pkgs.stdenv.mkDerivation {
