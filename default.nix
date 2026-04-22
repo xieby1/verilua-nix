@@ -36,7 +36,7 @@ let
     '';
   };
 in pkgs.stdenv.mkDerivation {
-  name = "verilua-envs";
+  name = "verilua-env";
   dontUnpack = true;
   # TODO: The following dependencies are currently not used by default.nix,
   #       which means the examples can be run without these dependencies.
@@ -56,6 +56,7 @@ in pkgs.stdenv.mkDerivation {
   shellHook = ''
     export VERILUA_HOME=${verilua_home}
 
+    # TODO: pkgs.luajit.pkgs.wrapLua
     # As nixpkgs has auto set LUA_PATH and LUA_CPATH of luajit-pro.withPackages(...),
     # why we still need to export?
     # Because of xmake!
@@ -65,6 +66,7 @@ in pkgs.stdenv.mkDerivation {
     export LUA_CPATH=${luajit-pro-with-packages.luaCpath}
   '';
   installPhase = ''
+    # Ensure $out exists so stdenv can create $out/nix-support/ (required for propagated-build-inputs).
     mkdir $out
   '';
 }

@@ -1,3 +1,4 @@
+# If nix-build fails, run it with `nix-build -K ...` to keep the failed build directory and inspect the errors.
 let
   npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
