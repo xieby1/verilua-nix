@@ -24,6 +24,7 @@ let
     name = "VERILUA_HOME";
     src = npinsed.verilua;
     postPatch = ''
+      patchShebangs .
       mkdir -p tools
       ln -s ${import ./lib/testbench_gen}/bin/testbench_gen tools/
 
