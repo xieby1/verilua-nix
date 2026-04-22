@@ -1,7 +1,7 @@
 let
-  npinsed = import ./npins;
+  npinsed = import ../../npins;
   pkgs = import npinsed.nixpkgs {};
-  my-derivation = import ./.;
+  my-derivation = import ../../.;
   propagated-content = builtins.readFile (my-derivation + /nix-support/propagated-build-inputs);
 in pkgs.lib.runTests {
   test-shellHook = pkgs.lib.testAllTrue [
