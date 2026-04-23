@@ -4,7 +4,7 @@
 let
   npinsed = import ./npins;
   pkgs = import npinsed.nixpkgs {};
-  luajit-pro-with-packages = (import ./luajit-pro).withPackages (luaPackages: [
+  luajit-pro-with-packages = ((import ./luajit-pro).withPackages (luaPackages: [
     luaPackages.penlight
     luaPackages.luasocket
     luaPackages.linenoise
@@ -18,7 +18,22 @@ let
     (import ./lib/lua-modules/verilua-src-lua)
     # TODO: The submodule debugger.lua is redundant, can be removed
     (import ./lib/lua-modules/debugger-lua)
-  ]);
+  ])).overrideAttrs (_old: {
+    LUA_PATH = builtins.concatStringsSep ";" [
+      "${npinsed.verilua}/src/lua/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/vpiml/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/sva/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/coverage/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/handles/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/scheduler/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/random/?.lua"
+      "${npinsed.verilua}/src/lua/verilua/utils/?.lua"
+      "${npinsed.verilua}/src/lua/thirdparty_lib/?.lua"
+      "${npinsed.verilua}/extern/debugger.lua/?.lua"
+      "${npinsed.verilua}/extern/luajit_tcc/?.lua"
+    ];
+  });
   # Here we use symlinkJoin instead of use applyPatches, because we do not want a copy of npinsed.verilua
   verilua_home = pkgs.symlinkJoin {
     name = "VERILUA_HOME";
@@ -63,7 +78,8 @@ in pkgs.stdenv.mkDerivation {
     # Because of xmake!
     # Xmake embed a lua/luajit in its binary. It does not utilize the user's lua.
     # So to xmake happy (xmake needs to access verilua lua files), we need to export LUA_PATH and LUA_CPATH.
-    export LUA_PATH=${luajit-pro-with-packages.luaPath}
+    # TODO: why luajit need luajit-pro-with-packages.LUA_PATH?
+    export LUA_PATH="${luajit-pro-with-packages.luaPath};${luajit-pro-with-packages.LUA_PATH}"
     export LUA_CPATH=${luajit-pro-with-packages.luaCpath}
   '';
   installPhase = ''
