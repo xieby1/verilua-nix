@@ -19,7 +19,6 @@ in {
     (import ../../../luajit-pro)
   ];
   # TODO: support other simulators
-  # "verilator_i"
   # "verilator_dpi"
   # "vcs"
   # "vcs_dpi"
@@ -29,6 +28,8 @@ in {
   buildFeatures = (
     if        simulator == "verilator" then [
       "verilator" "chunk_task" "verilator_inner_step_callback"
+    ] else if simulator == "verilator_i" then [
+      "verilator" "chunk_task" "verilator_inner_step_callback" "inertial_put"
     ] else if simulator == "wave_vpi" then [
       "wave_vpi" "chunk_task"
     ] else if simulator == "nosim" then [

@@ -6,7 +6,7 @@ in pkgs.symlinkJoin {
     "verilator"
     "wave_vpi"
     "nosim"
-    # "verilator_i"
+    "verilator_i"
     # "verilator_dpi"
     # "vcs"
     # "vcs_dpi"

@@ -9,6 +9,7 @@ in pkgs.lib.runTests {
     (simulator: builtins.pathExists (per-simulator {inherit simulator;} + "/lib/libverilua_${simulator}.so"))
     [
       "verilator"
+      "verilator_i"
       "wave_vpi"
       "nosim"
     ]
@@ -19,7 +20,6 @@ in pkgs.lib.runTests {
     map
     (simulator: !(builtins.tryEval (per-simulator {inherit simulator;}).outPath).success)
     [
-      "verilator_i"
       "verilator_dpi"
       "vcs"
       "vcs_dpi"
