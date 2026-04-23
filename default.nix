@@ -19,7 +19,6 @@ let
     # TODO: The submodule debugger.lua is redundant, can be removed
     (import ./lib/lua-modules/debugger-lua)
   ]);
-  verilua_home = pkgs.symlinkJoin {
   verilua_home = pkgs.applyPatches {
     name = "VERILUA_HOME";
     src = npinsed.verilua;
