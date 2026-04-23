@@ -19,21 +19,21 @@ let
     # TODO: The submodule debugger.lua is redundant, can be removed
     (import ./lib/lua-modules/debugger-lua)
   ]);
-  verilua_home = pkgs.applyPatches {
+  # Here we use symlinkJoin instead of use applyPatches, because we do not want a copy of npinsed.verilua
+  verilua_home = pkgs.symlinkJoin {
     name = "VERILUA_HOME";
-    src = npinsed.verilua;
-    postPatch = ''
-      patchShebangs .
-      mkdir -p tools
-      ln -s ${import ./lib/testbench_gen}/bin/testbench_gen tools/
+    paths = [npinsed.verilua];
+    postBuild = ''
+      mkdir -p $out/tools
+      ln -s ${import ./lib/testbench_gen}/bin/testbench_gen $out/tools/
 
-      ln -s ${luajit-pro-with-packages}/include luajit-pro/luajit2.1/
-      ln -s ${luajit-pro-with-packages}/lib luajit-pro/luajit2.1/
+      ln -s ${luajit-pro-with-packages}/include $out/luajit-pro/luajit2.1/
+      ln -s ${luajit-pro-with-packages}/lib $out/luajit-pro/luajit2.1/
 
-      mkdir -p conan_installed/include
-      mkdir -p conan_installed/lib
+      mkdir -p $out/conan_installed/include
+      mkdir -p $out/conan_installed/lib
 
-      mkdir -p shared
+      mkdir -p $out/shared
     '';
   };
 in pkgs.stdenv.mkDerivation {
